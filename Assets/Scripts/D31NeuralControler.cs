@@ -236,23 +236,44 @@ public class D31NeuralControler : MonoBehaviour
 
     public float GetScoreBlue()
     {
-        // Fitness function for the Blue player. The code to attribute fitness to individuals should be written here.  
-        int pntsPosseBola = hitTheBall * 10;  // pontos adicionados ao fitness caso agente controle a bola
-        int pntsBaterParede = hitTheWall * 10;  // pontos retirados ao fitness caso agente vá contra as paredes
-        int golosMarcados = GoalsOnAdversaryGoal * 100;  // pontos adicionados caso agente marque golo
-        int golosSofridos = GoalsOnMyGoal * 100;  // pontos retirados caso agente sofra golo
-        float fitness = distanceTravelled + pntsPosseBola + golosMarcados - pntsBaterParede - golosSofridos;
+        // Fitness function for the Red player. The code to attribute fitness to individuals should be written here. 
+
+        int pntsPosseBola = hitTheBall * 100;  // pontos adicionados ao fitness caso agente controle a bola
+        int pntsBaterParede = hitTheWall * 100;  // pontos retirados ao fitness caso agente vá contra as paredes
+        int golosMarcados = GoalsOnAdversaryGoal * 10000;  // pontos adicionados caso agente marque golo
+        int golosSofridos = GoalsOnMyGoal * 10000;  // pontos retirados caso agente sofra golo
+        float distanciaBola = distanceToBall.Average() * 2;  // distancia do agente à bola
+        float distanciaBalizaAd = distanceToAdversaryGoal.Average() * 5;  // distancia do agente à baliza adversária
+        float defesaBola = distancefromBallToMyGoal.Average() * 5;  // distancia da bola à baliza do agente
+        float remateBola = distancefromBallToAdversaryGoal.Average() * 5;  // distancia da bola à baliza adversária
+        // fitness mapa Evolving-OnevsOne - João e Cota
+        float fitness = golosMarcados + pntsPosseBola - golosSofridos - pntsBaterParede - distanciaBola - distanciaBalizaAd - remateBola + defesaBola;
         return fitness;
     }
 
     public float GetScoreRed()
     {
         // Fitness function for the Red player. The code to attribute fitness to individuals should be written here. 
-        int pntsPosseBola = hitTheBall * 10;  // pontos adicionados ao fitness caso agente controle a bola
-        int pntsBaterParede = hitTheWall * 10;  // pontos retirados ao fitness caso agente vá contra as paredes
-        int golosMarcados = GoalsOnAdversaryGoal * 100;  // pontos adicionados caso agente marque golo
-        int golosSofridos = GoalsOnMyGoal * 100;  // pontos retirados caso agente sofra golo
-        float fitness = distanceTravelled + pntsPosseBola + golosMarcados - pntsBaterParede - golosSofridos;
+        
+        int pntsPosseBola = hitTheBall * 100;  // pontos adicionados ao fitness caso agente controle a bola
+        int pntsBaterParede = hitTheWall * 100;  // pontos retirados ao fitness caso agente vá contra as paredes
+        int golosMarcados = GoalsOnAdversaryGoal * 10000;  // pontos adicionados caso agente marque golo
+        int golosSofridos = GoalsOnMyGoal * 10000;  // pontos retirados caso agente sofra golo
+        float distanciaBola = distanceToBall.Average() * 2;  // distancia do agente à bola
+        float distanciaBalizaAd = distanceToAdversaryGoal.Average() * 5;  // distancia do agente à baliza adversária
+        float distanciaBaliza = distanceToMyGoal.Average() * 5;  // distancia do agente à sua baliza
+        float defesaBola = distancefromBallToMyGoal.Average() * 5;  // distancia da bola à baliza do agente
+        float remateBola = distancefromBallToAdversaryGoal.Average() * 5;  // distancia da bola à baliza adversária
+        // fitness mapa Evolving-ControlTheBallToAdversaryGoal - João
+        //float fitness = golosMarcados + pntsPosseBola - golosSofridos - pntsBaterParede;
+        // fitness mapa Evolving-ControlTheBallToAdversaryGoalRandom - Raul
+        //float fitness = golosMarcados + pntsPosseBola - golosSofridos - pntsBaterParede - distanciaBola - distanciaBalizaAd;
+        // fitness mapa Evolving-Defense - Cota
+        //float fitness = golosMarcados + pntsPosseBola + defesaBola - golosSofridos - pntsBaterParede;
+        // fitness mapa Evolving-DefenseBallRandom - Raul
+        //float fitness = golosMarcados + pntsPosseBola + defesaBola - golosSofridos - pntsBaterParede - distanciaBaliza - distanciaBola;
+        // fitness mapa Evolving-OnevsOne - João e Cota
+        float fitness = golosMarcados + pntsPosseBola - golosSofridos - pntsBaterParede - distanciaBola - distanciaBalizaAd - remateBola + defesaBola;
         return fitness;
     }
 
